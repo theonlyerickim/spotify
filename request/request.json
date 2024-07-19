@@ -1,0 +1,16 @@
+[
+  {
+    "search": "money",
+    "playlist": [
+      509,
+      637,
+      6911,
+      9165, 
+      13250,
+      935, 
+      970
+    ],
+    "recommender_neighbors": 10000, 
+    "search_neighbors": 20
+  }
+]
