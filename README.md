@@ -157,7 +157,7 @@ artist genre: ['atl hip hop', 'atl trap', 'rap', 'trap']
 ```
 
 ## Docker
-The project is encapsulated in a docker.  
+The search engine and recommendation system is setup to run on Docker.    
 * The docker container includes Flask webserver 
 * To build a docker image and run a container, execute the following commands: 
 ```
