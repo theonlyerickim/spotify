@@ -11,10 +11,10 @@ This project is to develop a search engine and recommendation systems using meta
 
 ## SpotifyAPI Class
 The Spotify API class pulls data from multiple services and does the following: 
-* Get token to pull from their API using the get_token method.
-* Pulls artist information using the get_artist method.
-* Pulls album information using the get_albums method.
-* Pull track information using the get_tracks method.
+* Get token to pull from their API using the get_token api service.
+* Pulls artist information using the get_artist api service.
+* Pulls album information using the get_albums api service.
+* Pull track information using the get_tracks api service.
 * Pulls audio features/embeddings using the pull_and_save_audio_embeddings method.
 The current methods are configured to pull a limited amount of data.  To pull a more comprehensive set of data from the SpotifyAPI, increase the batch_size parameter in the get_artist method. 
 
@@ -157,7 +157,7 @@ artist genre: ['atl hip hop', 'atl trap', 'rap', 'trap']
 ```
 
 ## Docker
-The search engine and recommendation system is setup to run on Docker.    
+The search engine and recommendation system is configured to run in a Docker container.    
 * The docker container includes Flask webserver 
 * To build a docker image and run a container, execute the following commands: 
 ```

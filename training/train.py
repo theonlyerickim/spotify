@@ -24,6 +24,7 @@ class Preprocess:
         self.artists = pd.DataFrame()
         self.volume_minimum = 0.01
 
+
     def compile_audio_features(self):
         # compile audio features from csv files
         files = glob.glob(self.audio_features_path)
@@ -55,11 +56,13 @@ class Preprocess:
                 df = pd.read_csv(file, index_col=0)
                 self.artists = pd.concat([self.artists, df], axis=0)
 
-    def merge_artists_albums_tracks_audio_features(self):
+    # merge files into a single dataframe
+    def merge_artists_albums_tracks_audio_features(self):    
         self.compiled_data = self.audio_features.merge(self.tracks, how='inner', left_on='id', right_on='track_id')
         self.compiled_data = self.compiled_data.merge(self.albums, how='inner', on='album_id')
         self.compiled_data = self.compiled_data.merge(self.artists, how='inner', on='artist_id')
 
+    # remove unwanted characters from genre column and one hot encode
     def preprocess_artist_genre_features(self):
         self.processed = self.compiled_data.copy()
         self.processed['artist_genre'] = self.compiled_data['artist_genre'].str.replace("\[", "", regex=True)
@@ -71,6 +74,7 @@ class Preprocess:
         artist_genre_ohe = self.drop_duplicate_columns_and_low_volume_dummies(artist_genre_ohe, self.volume_minimum)
         self.processed = pd.concat([self.processed, artist_genre_ohe], axis=1)
 
+    # min/max standardization for audio features
     def preprocess_audio_features(self):
         self.processed['danceability'] = self.standardize(self.processed['danceability'])
         self.processed['key'] = self.standardize(self.processed['key'])
@@ -82,6 +86,7 @@ class Preprocess:
         self.processed['liveness'] = self.standardize(self.processed['liveness'])
         self.processed['tempo'] = self.standardize(self.processed['tempo'])
 
+    # process recency feature 
     def preprocess_recency_feature(self):
         self.processed['album_release_date'] = self.processed['album_release_date'].apply(pd.to_datetime)
         self.processed['day_difference'] = datetime.today() - self.processed['album_release_date']
@@ -122,6 +127,7 @@ class Training(Preprocess):
         self.knn_recommender = NearestNeighbors(metric='cosine', algorithm='brute')
         self.knn_search = NearestNeighbors(metric='cosine', algorithm='brute')
 
+    # read in preprocessed data, drop columns for training
     def read_in_preprocessed_data(self):
         self.preprocessed_data = pd.read_csv(self.preprocessed_data_path, index_col=0)
         self.preprocessed_data.drop_duplicates(subset=['track_name'], inplace=True)
@@ -136,26 +142,30 @@ class Training(Preprocess):
                                                     'artist_genre'], axis=1)
 
 
-
+    # transform audio features to embeddings for recommendation
     def transform_to_embeddings(self):
         self.vector_embedding = self.preprocessed_recommender_data.values
 
+    # transform track names into embeddings for search
     def transform_track_name_to_embeddings(self):
         search_embedding = []
         for i in range(len(self.preprocessed_search_data)):
             search_embedding.append(self.preprocess_text(self.preprocessed_search_data.loc[i, 'track_name']))
         self.search_embedding = np.stack(search_embedding, axis=0)
-        print('length', self.search_embedding.shape)
 
+    # save recommender feature labels
     def save_features(self):
         self.recommender_features = self.preprocessed_recommender_data.columns
 
+    # train recommender
     def train_recommender(self):
         self.knn_recommender.fit(self.vector_embedding)
 
+    # train search engine
     def train_search(self):
         self.knn_search.fit(self.search_embedding)
 
+    # save recommender model and metadata
     def save_recommender_model(self):
         Models = dict()
         Models['knn_recommender'] = self.knn_recommender
@@ -166,6 +176,7 @@ class Training(Preprocess):
         with open("../models/knn_recommender.pkl", "wb") as f:
             pickle.dump(Models, f)
 
+    # save search model and metadata
     def save_search_model(self):
         Models = dict()
         Models['knn_search'] = self.knn_search

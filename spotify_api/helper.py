@@ -30,6 +30,9 @@ class SpotifyAPI:
         json_result = json.loads(result.content)
         self.token = json_result["access_token"]
 
+    # get_artist api service  
+    # batch_size are the number of files per alphabet letter
+    # each file contains 50 artists
     def get_artists(self, batch_size):
         for letter in alphabet:
             for batch in range(batch_size):
@@ -86,6 +89,7 @@ class SpotifyAPI:
                     artist_search_results_df = pd.DataFrame(artist_search_results)
                     artist_search_results_df.to_csv(f'./data/artists/artist_search_results_{letter}_{batch}.csv')
 
+    # album api service
     def pull_and_save_albums(self, artist_id):
         url = "https://api.spotify.com/v1/artists/"
         headers = {"Authorization": "Bearer " + self.token}
@@ -196,6 +200,7 @@ class SpotifyAPI:
         tracks_by_album_df.to_csv(f'./data/tracks/tracks_by_album_df_{album_id}.csv')
         return result
 
+    # get_tracks api service
     def get_tracks(self):
         files = glob.glob('./data/albums/*', recursive=True)
         for file in files:
@@ -236,6 +241,7 @@ class SpotifyAPI:
             audio_features_df.to_csv(f'./data/audio_features/audio_features_df_{album_id}.csv')
         return result
 
+    # get_audio_features api service
     def get_audio_features(self):
         files = glob.glob('./data/tracks/*', recursive=True)
         for file in files:

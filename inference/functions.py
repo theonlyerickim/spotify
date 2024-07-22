@@ -18,29 +18,33 @@ class Inference(train.Training):
         f = open(self.request_path)
         self.json_request = json.load(f)
 
-
+    # load both models
     def load_models(self):
         #load search model
         self.knn_search = pickle.load(open(self.knn_search_path, 'rb'))
         #load recommender model
         self.knn_recommender = pickle.load(open(self.knn_recommender_path, 'rb'))
 
+    # search engine
     def search_inference(self):
         self.search_results_distances, self.search_results_indices = \
             self.knn_search['knn_search'].kneighbors(self.search_embedding.reshape(1, -1), n_neighbors =
             self.json_request[0]['search_neighbors'])
 
+    # recommendation system
     def recommender_inference(self):
         self.recommender_results_distances, self.recommender_results_indices = \
             self.knn_recommender['knn_recommender'].kneighbors(self.playlist_embedding.reshape(1,-1), n_neighbors=
             self.json_request[0]['recommender_neighbors'])
 
+    # transform user playlist into embeddings for recommender inference
     def playlist_summary(self):
         playlist = self.preprocessed_recommender_data.iloc[self.json_request[0]['playlist']]
         playlist_indexed = playlist.reindex(self.knn_recommender['recommender_features'], axis=1)
         df_playlist_mean = playlist_indexed.mean().to_frame().T
         self.playlist_embedding = df_playlist_mean.values
 
+    # print results
     def print_search_results(self):
         print('Search Results: ')
         for i in range(len(self.search_results_indices[0][:10])):
