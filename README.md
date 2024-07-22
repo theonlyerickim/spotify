@@ -58,7 +58,116 @@ The Inference class loads the knn_search.pkl and knn_recommender.pkl files and u
 ]
 ```
 
+## Search Engine Response
+```
+Search Term: money
+***********************************************
 
+SEARCH RESULTS BASED ON SEARCH TERM ONLY...
+Track: Money
+Artist: Yes
+Genre: ['album rock', 'art rock', 'classic rock', 'hard rock', 'progressive rock', 'rock', 'soft rock', 'symphonic rock']
+Distance (Cosine Similarity): 0.0
 
+Track: Money
+Artist: Lil Baby
+Genre: ['atl hip hop', 'atl trap', 'rap', 'trap']
+Distance (Cosine Similarity): 0.0
 
+Track: Money Forever
+Artist: Lil Baby
+Genre: ['atl hip hop', 'atl trap', 'rap', 'trap']
+Distance (Cosine Similarity): 0.09612805
+
+Track: Money Maker
+Artist: Mozzy
+Genre: ['cali rap', 'sacramento hip hop']
+Distance (Cosine Similarity): 0.18696684
+
+Track: Lies & Money
+Artist: Wood & Wire
+Genre: ['neo-traditional bluegrass', 'progressive bluegrass']
+Distance (Cosine Similarity): 0.19788003
+
+```
+
+## Example of User Playlist
+```
+USER PLAYLIST...
+track name: Heatin Up (feat. Gunna)
+artist name: Lil Baby
+artist genre: ['atl hip hop', 'atl trap', 'rap', 'trap']
+
+track name: Que Bonito Que Bonito
+artist name: Ramon Ayala Y Sus Bravos Del Norte
+artist genre: ['musica mexicana', 'norteno']
+
+track name: Tic Tac
+artist name: Lil Uzi Vert
+artist genre: ['hip hop', 'melodic rap', 'philly rap', 'rage rap', 'rap', 'trap']
+
+track name: Moment of Clarity
+artist name: Lil Uzi Vert
+artist genre: ['hip hop', 'melodic rap', 'philly rap', 'rage rap', 'rap', 'trap']
+
+track name: Patek
+artist name: Lil Uzi Vert
+artist genre: ['hip hop', 'melodic rap', 'philly rap', 'rage rap', 'rap', 'trap']
+
+track name: Large
+artist name: Lil Baby
+artist genre: ['atl hip hop', 'atl trap', 'rap', 'trap']
+
+track name: My Drip
+artist name: Lil Baby
+artist genre: ['atl hip hop', 'atl trap', 'rap', 'trap']
+```
+
+## Recommendation Response based on User Playlist
+```
+USER PLAYLIST...
+track name: Heatin Up (feat. Gunna)
+artist name: Lil Baby
+artist genre: ['atl hip hop', 'atl trap', 'rap', 'trap']
+
+track name: Que Bonito Que Bonito
+artist name: Ramon Ayala Y Sus Bravos Del Norte
+artist genre: ['musica mexicana', 'norteno']
+
+track name: Tic Tac
+artist name: Lil Uzi Vert
+artist genre: ['hip hop', 'melodic rap', 'philly rap', 'rage rap', 'rap', 'trap']
+
+track name: Moment of Clarity
+artist name: Lil Uzi Vert
+artist genre: ['hip hop', 'melodic rap', 'philly rap', 'rage rap', 'rap', 'trap']
+
+track name: Patek
+artist name: Lil Uzi Vert
+artist genre: ['hip hop', 'melodic rap', 'philly rap', 'rage rap', 'rap', 'trap']
+
+track name: Large
+artist name: Lil Baby
+artist genre: ['atl hip hop', 'atl trap', 'rap', 'trap']
+
+track name: My Drip
+artist name: Lil Baby
+artist genre: ['atl hip hop', 'atl trap', 'rap', 'trap']
+
+```
+
+## Docker
+The project is encapsulated in a docker.  
+* The docker container includes Flask webserver 
+* To build a docker image and run a container, execute the following commands: 
+```
+docker build .
+docker run -p 8000:8000 <image ID>
+
+```
+* Run the following curl command to run inference
+```
+curl -d @request.json -H "Content-Type: application/json" -X POST http://0.0.0.0:8000/predict
+
+```
 
