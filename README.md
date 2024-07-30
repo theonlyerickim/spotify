@@ -26,7 +26,7 @@ The Preprocess class compiles the data all the difference services, merges the d
 ## Training Class
 The Training class uses K-Nearest Neighbors to build a search engine and recommendation system.  The models are prototypes, so only search track name terms.  This can be expanded to include artists.  The training process includes the following: 
 * Tracknames are tokenized and lemmitized prior to converting into embeddings.  
-* Tracknames are transformed into numeric vectors using Spacy's tok2vec transformer (https://spacy.io/usage/embeddings-transformers).  This is for the search engine. 
+* Tracknames are transformed into numeric vectors using Spacy's tok2vec transformer (https://spacy.io/usage/embeddings-transformers).  This is used for the search engine. 
 * Audio features for the recommendation system is transformed into embeddings
 * Two models are trained and saved in the models folder, one for the search engine (knn_search.pkl) and one for the playlist recommendation (knn_recommender.pkl).
 * Models are trained using cosine distances
